@@ -4,6 +4,6 @@ A running record of every schema change made to the live Supabase database after
 
 ## 2026-10-21: Initial deployment
 
-- **Migration file:** `supabase/migrations/<timestamp>_initial_schema.sql`
-- **What changed:** Deployed Version 1 of the schema (every table in `schema/`).
-- **Why:** Baseline for all later changes.
+- **Migration file:** `supabase/migrations/20261021202441_initial_schema.sql`
+- **What changed:** Created and successfully tested the initial database schema containing all 10 tables in the JupyterHub TEST database (cinematic_test).(every table in `schema/`).
+- **Why:** To build a data base structure on data relating to movies.
