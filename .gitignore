@@ -20,3 +20,25 @@ __pycache__/
 .DS_Store
 Thumbs.db
 .vscode/
+
+# IMDb raw datasets
+*.tsv
+*.tsv.gz
+
+# Credentials and Python files
+.env
+.env.*
+.venv/
+__pycache__/
+.ipynb_checkpoints/
+
+# IMDb datasets
+*.tsv
+*.tsv.gz
+
+# Private environment files
+.env
+.env.*
+.venv/
+.ipynb_checkpoints/
+__pycache__/
