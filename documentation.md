@@ -189,7 +189,7 @@ Given our trouble with the locating data on movie studies and movie reviews, we'
 7. Run `etl/load.ipynb` (later `etl/etl_pipeline.ipynb`) to insert into `public`, parents first, in one transaction.
 8. Compare each table's row count to PROD.
 
-## Data Sourcing and Integration
+## Analysis and Reflection Questions
 
 1. Data Sourcing and Integration
 We could not find data for studio and reviews table so we had to restructure out schema, as we felt we had enough other relevant information.
