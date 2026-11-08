@@ -13,13 +13,16 @@ _List each teammate, then record who held each role every sprint._
 | 01     | David         | Andrea       |  Nicole   |
 | 02     |  Andrea       | Nicole       | David     |
 | 03     |       Nicole  | David        | Andrea    |
-| 04 | | | |
+| 04     | David         | Andrea       | Nicole    |
 | 05 | | | |
 | 06 | | | |
 
 
 
 Our Movie Review Aggregation and Analytics Platform organizes movie titles, release dates, genres, people involved in cast and crew, production studios, aggregate ratings, and written reviews. Movie viewers could compare movies and explore trends by genre, year, actor, director, or studio.
+
+
+
 Planned source: The Movie Database (TMDb) API: https://developer.themoviedb.org/docs/getting-started. Sprint 02 also considered IMDb developer resources and Rotten Tomatoes, but neither was confirmed as an accessible source. We must verify access, field names, API terms, and rating/review coverage before ETL in Sprint 04. No data has been collected or validated as part of this document.
 
 Proposed source information Destination Status / note
@@ -37,7 +40,23 @@ Age/content certification   movies.content_rating   Proposed based on Sprint 02 
 
 Real versus fabricated data: The intent is to use real external movie metadata. Whether individual reviews and certifications are available for the selected movies is not yet confirmed; any fabricated data must be labeled and approved by the team and instructor. The deployed database remains empty in Sprint 03.
 
+## Source Data (Actually Used)
+ - **What it is:** Gzipped TSV files of IMDb title and person data.
+- **Files used:** `title.basics`, `title.crew`, `title.principals`, `title.ratings`, `name.basics`.
+- **Source:** https://datasets.imdbws.com/ (documentation: https://developer.imdb.com/non-commercial-datasets)
+- **Retrieved:** 2026-10-30
+- **Size:** The raw tables are about 22 GB in Postgres.
+- **License / terms:** Personal and non-commercial use only, under IMDb's Conditions of Use (https://www.imdb.com/conditions) and the notice in each file. Use here is for a course project. IMDb requires this attribution wherever the data is shown: "Information courtesy of IMDb (https://www.imdb.com). Used with permission."
 
+| Table | Source | 
+|---|---|---|---|
+| `movies`| IMDb `title.basics` |
+| `genres` | IMDb `title.basics.genres` | 
+| `movie_genres` | IMDb `title.basics.genres` | 
+| `people` | IMDb `name.basics` | 
+| `movie_cast` | IMDb `title.principals` |
+| `movie_crew` | IMDb `title.principals` | 
+| `ratings` | IMDb `title.ratings` |
 
 ## Database design
 
@@ -144,13 +163,6 @@ In this design, if Kent Johnson wants to change his last name, only one update n
 
 
 
-
-
-
-
-
-
-
 ### E. Schema Design
 
 ![Schema Design](images/schema_design.png) 
@@ -159,8 +171,27 @@ In this design, if Kent Johnson wants to change his last name, only one update n
 Changes Made:
 We combined the original actors and crew_members tables into people because individuals can have both acting and production roles. We included a job in the movie_crew composite key to allow one person to perform multiple jobs on the same movie. We clarified the difference between ratings, which stores numerical ratings from different sources, and reviews, which stores individual written reviews.
 
+New Schema Design: 
 
+![Schema Design](images/updated_schema.png)
 
+Changes Made:
+Given our trouble with the locating data on movie studies and movie reviews, we've dropped the studios, move_studios, and reviews tables. This may be altered in the future if more data is found and integrated.
+
+### How to rebuild the database
+
+1. Drop the TEST database and create it again, empty.
+2. Run `supabase db push --db-url "<TEST url>?sslmode=disable"` to replay all migrations (initial schema, then metadata columns and triggers).
+3. Download the seven IMDb files from https://datasets.imdbws.com/ into `etl/`.
+4. Run `schema/schema_temporary.sql` to create the raw staging tables.
+5. Run the import notebook (`etl/cinema.ipynb`) to load the TSV files into `schema_temporary`.
+6. Run `schema/schema_clean.sql` to create the cleaned views in `schema_clean`.
+7. Run `etl/load.ipynb` (later `etl/etl_pipeline.ipynb`) to insert into `public`, parents first, in one transaction.
+8. Compare each table's row count to PROD.
+
+## Data Sourcing and Integration
+
+- We could not find data for studio and reviews table so we had to restructure out schema, as we felt we had enough other relevant information.
 
 
 ## Acknowledgments
