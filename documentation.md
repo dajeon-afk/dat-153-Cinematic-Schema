@@ -49,7 +49,7 @@ Real versus fabricated data: The intent is to use real external movie metadata. 
 - **License / terms:** Personal and non-commercial use only, under IMDb's Conditions of Use (https://www.imdb.com/conditions) and the notice in each file. Use here is for a course project. IMDb requires this attribution wherever the data is shown: "Information courtesy of IMDb (https://www.imdb.com). Used with permission."
 
 | Table | Source | 
-|---|---|---|---|
+|---|---|
 | `movies`| IMDb `title.basics` |
 | `genres` | IMDb `title.basics.genres` | 
 | `movie_genres` | IMDb `title.basics.genres` | 
@@ -191,7 +191,12 @@ Given our trouble with the locating data on movie studies and movie reviews, we'
 
 ## Data Sourcing and Integration
 
-- We could not find data for studio and reviews table so we had to restructure out schema, as we felt we had enough other relevant information.
+1. Data Sourcing and Integration
+We could not find data for studio and reviews table so we had to restructure out schema, as we felt we had enough other relevant information.
+
+
+4. Project Outcomes and Learning
+This project has help us understand how databases are vital in making data accessible or readable. The files we retrieved can't be opened on our laptops. Our schema provides a manageable window into the data, making that information available to the general public without extensive data wrangling skills. 
 
 
 ## Acknowledgments
